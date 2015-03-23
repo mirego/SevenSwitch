@@ -36,6 +36,7 @@
     BOOL didChangeWhileTracking;
     BOOL isAnimating;
     BOOL userDidSpecifyOnThumbTintColor;
+    CGRect viewFrame;
 }
 
 - (void)showOn:(BOOL)animated;
@@ -133,6 +134,7 @@
 	self.onLabel.textAlignment = NSTextAlignmentCenter;
     self.onLabel.textColor = [UIColor lightGrayColor];
     self.onLabel.font = [UIFont systemFontOfSize:12];
+    self.onLabel.alpha = 0;
     [background addSubview:self.onLabel];
 
 	self.offLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.size.height, 0, self.frame.size.width - self.frame.size.height, self.frame.size.height)];
@@ -247,8 +249,11 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
 
-    if (!isAnimating) {
-        CGRect frame = self.frame;
+    CGRect frame = self.frame;
+    if (!CGRectEqualToRect(frame, viewFrame)) {
+        viewFrame = frame;
+        
+        CGFloat normalKnobWidth = frame.size.height - 2;
 
         // background
         background.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
@@ -257,11 +262,10 @@
         // images
         onImageView.frame = CGRectMake(0, 0, frame.size.width - frame.size.height, frame.size.height);
         offImageView.frame = CGRectMake(frame.size.height, 0, frame.size.width - frame.size.height, frame.size.height);
-		self.onLabel.frame = CGRectMake(0, 0, frame.size.width - frame.size.height, frame.size.height);
-		self.offLabel.frame = CGRectMake(frame.size.height, 0, frame.size.width - frame.size.height, frame.size.height);
+		self.onLabel.frame = CGRectMake(0, 0, frame.size.width - normalKnobWidth, frame.size.height);
+		self.offLabel.frame = CGRectMake(normalKnobWidth, 0, frame.size.width - normalKnobWidth, frame.size.height);
 		
         // knob
-        CGFloat normalKnobWidth = frame.size.height - 2;
         if (self.on)
             knob.frame = CGRectMake(frame.size.width - (normalKnobWidth + 1), 1, frame.size.height - 2, normalKnobWidth);
         else

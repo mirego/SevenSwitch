@@ -60,6 +60,16 @@
     mySwitch3.onTintColor = [UIColor colorWithRed:0.45f green:0.58f blue:0.67f alpha:1.00f];
     mySwitch3.borderColor = [UIColor clearColor];
     mySwitch3.shadowColor = [UIColor blackColor];
+    
+    // Example of switch with text
+    SevenSwitch *mySwitch4 = [[SevenSwitch alloc] initWithFrame:CGRectMake(0, 0, 70, 30)];
+    mySwitch4.center = CGPointMake(self.view.bounds.size.width * 0.5, self.view.bounds.size.height * 0.5 + 130);
+    [mySwitch4 addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+    [self.view addSubview:mySwitch4];
+    
+    mySwitch4.onLabel.text = @"ON";
+    mySwitch4.onLabel.textColor = [UIColor whiteColor];
+    mySwitch4.offLabel.text = @"OFF";
 }
 
 - (void)switchChanged:(SevenSwitch *)sender {
